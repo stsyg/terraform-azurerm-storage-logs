@@ -12,7 +12,7 @@ Template repository for Terraform projects
 ## Usage
 The following resources will be created:
 
-- Azure Resource Group for TF state resources
+- Azure Resource Group
 - Azure Storage Account to store TF state files
 - Azure Resource #3
 
