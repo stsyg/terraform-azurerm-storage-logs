@@ -1,8 +1,10 @@
-# Repo Description
-Template repository for Terraform projects
+# Deployment of Azure Storage Account and Log Analytics
+Terraform code to deploy Azure Storage Account and support Azure resources to store diagnostics and logs from the infrastructure services deployed in my lab.
 
 #### Table of Contents
   - [Usage](#usage)
+  - [Pre-requisites](#pre-requisites)
+  - [How to run code](#Howtoruncode)
   - [Requirements](#requirements)
   - [Providers](#providers)
   - [Modules](#modules)
@@ -14,7 +16,6 @@ The following resources will be created:
 
 - Azure Resource Group
 - Azure Storage Account to store TF state files
-- Azure Resource #3
 
 ## Pre-requisites
 Several prerequisites need to be in place before using this repo.
