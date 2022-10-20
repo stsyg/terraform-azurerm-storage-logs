@@ -4,7 +4,8 @@ Terraform code to deploy Azure Storage Account and support Azure resources to st
 #### Table of Contents
   - [Usage](#usage)
   - [Pre-requisites](#pre-requisites)
-  - [How to run code](#How-to-run-code)
+  - [How to run code](#how-to-run-code)
+    - [Local Code Execution](#local-code-execution)
   - [Requirements](#requirements)
   - [Providers](#providers)
   - [Modules](#modules)

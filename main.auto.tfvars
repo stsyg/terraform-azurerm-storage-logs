@@ -1,5 +1,5 @@
-﻿prefix   = "prj"
-service  = "template"
+﻿prefix   = "infra"
+service  = "storage-logs"
 backend  = "tfstate"
 location = "canadacentral"
 infra_vnet = {
@@ -8,7 +8,7 @@ infra_vnet = {
 }
 
 default_tags = {
-  environment = "Dev"
-  designation = "Project"
+  environment = "Lab"
+  designation = "Infrastructure"
   provisioner = "Terraform"
 }
