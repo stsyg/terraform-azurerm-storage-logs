@@ -1,5 +1,5 @@
 ﻿prefix   = "infra"
-service  = "storage-logs"
+service  = "storage"
 backend  = "tfstate"
 location = "canadacentral"
 infra_vnet = {

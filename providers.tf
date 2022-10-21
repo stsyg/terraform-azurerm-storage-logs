@@ -16,6 +16,10 @@
       source = "hashicorp/random"
       version = "~>3.4.3"
     }
+    external = {
+      source = "hashicorp/external"
+      version = "~>2.2.2"
+    }
     github = {
       source = "integrations/github"
       version = "~>5.5.0"
@@ -25,12 +29,12 @@
       version = "~>0.1.3"
     }
   }
-  # backend "azurerm" {
-  #   resource_group_name  = "StorageAccountResourceGroupName"
-  #   storage_account_name = "StorageAccountName"
-  #   container_name       = "tfstate"
-  #   key                  = "prod.terraform.tfstate"
-  # }
+  backend "azurerm" {
+    resource_group_name  = "infra-storage-rg"
+    storage_account_name = "infrastoraged103"
+    container_name       = "infrastoragetfstate"
+    key                  = "lab.infrastoragelogs.tfstate"
+  }
   required_version = ">= 1.3.2"
 }
 

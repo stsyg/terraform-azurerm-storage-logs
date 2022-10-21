@@ -6,6 +6,7 @@ Terraform code to deploy Azure Storage Account and support Azure resources to st
   - [Pre-requisites](#pre-requisites)
   - [How to run code](#how-to-run-code)
     - [Local Code Execution](#local-code-execution)
+    - [Remote code execution](#remote-code-execution)
   - [Requirements](#requirements)
   - [Providers](#providers)
   - [Modules](#modules)
@@ -16,7 +17,7 @@ Terraform code to deploy Azure Storage Account and support Azure resources to st
 The following resources will be created:
 
 - Azure Resource Group
-- Azure Storage Account to store TF state files
+- Azure Storage Account and Container to store TF state files
 
 ## Pre-requisites
 Several prerequisites need to be in place before using this repo.
@@ -71,20 +72,7 @@ Troubleshoot any errors (if needed) and move to the next step - remote code exec
 ### Remote code execution
 This part of the readme describes how to use GitHub Actions to plan and apply Terraform code.
 
-1. Enable Storage Account Container block in backend_sa.tf file. 
-```
-# Create Container in Storage Account to store TF state files
-resource "azurerm_storage_container" "this" {
-  name                  = "tfstate"
-  storage_account_name  = azurerm_storage_account.this.name
-  container_access_type = "private"
-}
-```
-and run 
-```
-terraform apply
-```
-2. Add remote backend block in providers.tf
+1. Add remote backend block in providers.tf
 ```
   backend "azurerm" {
     resource_group_name  = "StorageAccountResourceGroupName"
@@ -93,11 +81,11 @@ terraform apply
     key                  = "prod.terraform.tfstate"
   }
 ```
-3. Create a new feature branch and add code
-4. Run git commit and fix any issue checking the pre-commit log presented in the terminal
-5. Run git push to apply Terraform code. Check GitHub actions for any errors and fix them
-6. When the feature is developed, create a PR to merge with the main. Check GitHub Actions for any errors and fix them
-7. Repeat step #1 for new feature development
+and run 
+```
+terraform init -upgrade
+```
+Confirm the question of asking if you want to copy the existing state to the new backend.
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -108,6 +96,7 @@ terraform apply
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.2 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~>2.29.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~>3.24.0 |
+| <a name="requirement_external"></a> [external](#requirement\_external) | ~>2.2.2 |
 | <a name="requirement_git"></a> [git](#requirement\_git) | ~>0.1.3 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | ~>5.5.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~>3.4.3 |
@@ -119,6 +108,7 @@ terraform apply
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.29.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.24.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | 2.2.2 |
 | <a name="provider_git"></a> [git](#provider\_git) | 0.1.3 |
 | <a name="provider_github"></a> [github](#provider\_github) | 5.5.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.4.3 |
@@ -139,6 +129,7 @@ No modules.
 | [azurerm_role_assignment.build_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.subscription_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_account.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
+| [azurerm_storage_container.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [github_actions_secret.github_actions_azure_credentials](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
 | [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [time_rotating.this](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
@@ -146,6 +137,7 @@ No modules.
 | [azurerm_subnet.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [external_external.myipaddr](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 | [git_repository.this](https://registry.terraform.io/providers/innovationnorway/git/latest/docs/data-sources/repository) | data source |
 | [github_actions_public_key.this](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/actions_public_key) | data source |
 | [github_repository.this](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repository) | data source |

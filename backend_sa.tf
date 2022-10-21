@@ -19,9 +19,14 @@ resource "random_id" "this" {
   byte_length = 2
 }
 
+# Get public IP address
+data "external" "myipaddr" {
+  program = ["bash", "-c", "curl -s 'https://ipinfo.io/json'"]
+}
+
 # Create Resource Group for storage account
 resource "azurerm_resource_group" "this" {
-  name     = "${var.prefix}-${var.service}-${var.backend}-rg"
+  name     = "${var.prefix}-${var.service}-rg"
   # Use line below if backend service needs to be in the naming convention
   #name     = "${var.prefix}-${var.service}-${var.backend}-rg"
   location = var.location
@@ -34,7 +39,7 @@ resource "azurerm_storage_account" "this" {
 	# checkov:skip=CKV2_AZURE_1: It's not critical to encrypt this SA with CMK
 	# checkov:skip=CKV2_AZURE_18: Customer managed key is not going to be used
 	# checkov:skip=CKV_AZURE_33: Storage Queue is not used
-  name                     = "${var.prefix}${var.service}${var.backend}${random_id.this.hex}"
+  name                     = "${var.prefix}${var.service}${random_id.this.hex}"
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
   account_tier             = "Standard"
@@ -46,10 +51,17 @@ resource "azurerm_storage_account" "this" {
   network_rules {
     default_action             = "Deny"
     bypass = ["AzureServices", "Logging", "Metrics"]
-  #  ip_rules                   = []
-  #  virtual_network_subnet_ids = [data.azurerm_subnet.this[0].id]
+    ip_rules                   = [data.external.myipaddr.result.ip] # add IP from What's My IP service
     virtual_network_subnet_ids = toset(data.azurerm_subnet.this.*.id)
   }
 
   tags = var.default_tags
+}
+
+# Create Container in Storage Account to store TF state files
+resource "azurerm_storage_container" "this" {
+	# checkov:skip=CKV2_AZURE_21: Logging is disabled for now
+  name                  = "${var.prefix}${var.service}tfstate"
+  storage_account_name  = azurerm_storage_account.this.name
+  container_access_type = "private"
 }

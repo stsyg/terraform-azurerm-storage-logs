@@ -8,6 +8,7 @@ variable "service" {
   description = "Service name used in Azure resources naming convention"
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "backend" {
   type        = string
   description = "Backend name used for core Azure resources naming convention"
